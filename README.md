@@ -1,7 +1,10 @@
 # Backend 4 Android Developers
 Source code of slides for [Backend 4 Android Developers](http://it.droidcon.com/2016/sessions/backend-for-android-developers/) talk [@DroidCon-IT 2016 Turin](http://it.droidcon.com/2016/) by [Antonio Mallia](https://github.com/amallia/) and [Nicola Corti](https://github.com/cortinico).
 
-## View the slides
+## Open the slides
+**[Press here to view the slides online at backend4android.github.io](http://backend4android.github.io/)**
+
+## Open the slides (locally)
 
 To open the slides simply clone the repo and open *index.hmtl*
 
