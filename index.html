@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Backend 4 Android Developers</title>
+
+    <meta name="description" content="Presentation for 'Backend 4 Android Developers' seminar @DroidCon IT2016">
+    <meta name="author" content="Antonio Mallia & Nicola Corti">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/material.css" id="theme">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/darkula.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section class="home">
+            <h1>Backend<br/>4 Android<br/>Developers</h1>
+            <h4>...or <i>Your API Swiss Knife</i></h4>
+            <p>
+                <small style="float: left">Antonio Mallia &amp; Nicola Corti</small>
+                <small style="float: right"><i class="fa fa-android"></i>
+                    #droidconIT 2016 Turin
+                </small>
+            </p>
+        </section>
+
+        <section>
+            <h2>About us</h2>
+            <div style="width: 100%;">
+                <div class="author anto">
+                    <h3><strong>Antonio</strong><br/>Mallia</h3>
+                    <p class="job">
+                        Software Engineer<br/>@ .it Registry
+                    </p>
+                    <img src="img/antonio.png" class="avatar"/>
+                    <p class="contacts">
+                        <i class="fa fa-paper-plane"></i> <a
+                            href="mailto:me@antoniomallia.it">me@antoniomallia.it</a><br/>
+                        <i class="fa fa-twitter"></i> <a
+                            href="https://twitter.com/antonio_mallia">@antonio_mallia</a><br/>
+                        <i class="fa fa-github"></i> <a href="https://github.com/amallia">github.com/amallia</a>
+                    </p>
+                </div>
+                <div class="author nico">
+                    <h3><strong>Nicola</strong><br/>Corti</h3>
+                    <p class="job">
+                        Android Software Engineer<br/>@ Monetas AG
+                    </p>
+                    <img src="img/nicola.jpg" class="avatar"/>
+                    <p class="contacts">
+                        <a href="mailto:corti.nico@gmail.com">corti.nico@gmail.com</a> <i class="fa fa-paper-plane"></i><br/>
+                        <a href="https://twitter.com/cortinico">@cortinico</a> <i class="fa fa-twitter"></i><br/>
+                        <a href="https://github.com/cortinico">github.com/cortinico</a> <i class="fa fa-github"></i>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Agenda</h2>
+            <div style="width: 100%;">
+                <div style="width: 50%; float: left;" class="fragment">
+                    <h5>Part I</h5>
+                    <ul style="margin: 0">
+                        <li>Why a custom backend?</li>
+                        <li>RESTful API</li>
+                        <li>Framework</li>
+                        <li>Database</li>
+                        <li>JSON Web Token</li>
+                    </ul>
+                </div>
+                <div style="width: 50%; float: left;" class="fragment">
+                    <h5>Part II</h5>
+                    <ul style="margin: 0">
+                        <li>Android Vanilla</li>
+                        <li>HTTP Library</li>
+                        <li>Converters</li>
+                        <li>Async exec.</li>
+                        <li>Caching</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <section>
+                <h2>Motivation</h2>
+            </section>
+
+            <section>
+                <h2>I'll go with a BaaS</h2>
+                <img src="img/parse.png" style="border:none; box-shadow:none;">
+            </section>
+            <section data-background="img/close.jpg" data-transition-speed="fast"></section>
+
+            <section>
+                <h2>Parse Server</h2>
+                <div style="width: 50%;float: left;">
+                    <p><img src="img/parse-server.png" style="border:none; box-shadow:none;"></p>
+                </div>
+                <div style="width: 50%;float: left;">
+                    It is:
+                    <p class="fragment highlight-green">Open-source</p>
+                    but...
+                    <p class="fragment highlight-red">Many Parse features missing</p>
+                    <p class="fragment highlight-red">Javascript</p>
+                    <p></p>
+                </div>
+            </section>
+            <section>
+                <h2>Parse alternatives</h2>
+                <div style="width: 50%;float: left;">
+                    <p>AnyPresence</p>
+                    <p>Appcelerator</p>
+                    <p>Appery</p>
+                    <p>Backendless</p>
+                    <p>CloudMine</p>
+                    <p>FeedHenry</p>
+                </div>
+                <div style="width: 50%;float: left;">
+                    <p>Firebase</p>
+                    <p>Kii</p>
+                    <p>Kinvey</p>
+                    <p>Kumulos</p>
+                    <p>moBack</p>
+                    <p>Syncano</p>
+                </div>
+                <p>and many others...</p>
+            </section>
+            <section>
+                <h2>Custom backend</h2>
+                <ul>
+                    <li>Flexible application logic</li>
+                    <li>Custom API</li>
+                    <li>It scales depending on the needs</li>
+                    <li>Your data is just on your server</li>
+                    <li>It can be cheaper</li>
+                </ul>
+            </section>
+
+        </section>
+
+        <section>
+            <h2>Android Developer Technologies</h2>
+            <section>
+                <p class="fragment"><b>REST</b></p>
+                <p class="fragment"><b>Java</b></p>
+                <p class="fragment"><b>JSON</b></p>
+                <p class="fragment"><b>Gradle</b></p>
+            </section>
+        </section>
+
+        <section>
+            <h2>What we want to build?</h2>
+            <h4>Framework + DB + Auth = User manager</h4>
+        </section>
+        <section>
+            <h2>RESTful API</h2>
+            <section>
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>An API is a UI for a developer</li>
+                    <li>Use HTTP methods</li>
+                    <li>Exploit HTTP status codes</li>
+                    <li>JSON encoded bodies</li>
+                    <li>Query params for filtering, sorting, searching</li>
+                    <li>Use token based authentication</li>
+                    <li>Only SSL</li>
+                </ul>
+            </section>
+            <section>
+                <br/>
+                <h3>HTTP methods</h3>
+                <pre style="width: 50%;float: left;"><code class="hljs text" data-trim>GET /users</code></pre>
+                <div style="width: 50%;float: left;"><p>Retrieves a list of users</p></div>
+                <pre style="width: 50%;float: left;"><code class="hljs text" data-trim>GET /users/1</code></pre>
+                <div style="width: 50%;float: left;"><p>Retrieves user #1</p></div>
+                <pre style="width: 50%;float: left;"><code class="hljs text" data-trim>POST /users</code></pre>
+                <div style="width: 50%;float: left;"><p>Creates a new user</p></div>
+                <pre style="width: 50%;float: left;"><code class="hljs text" data-trim>PUT /users/1</code></pre>
+                <div style="width: 50%;float: left;"><p>Updates user #1</p></div>
+                <pre style="width: 50%;float: left;"><code class="hljs text" data-trim>DELETE /users/1</code></pre>
+                <div style="width: 50%;float: left;"><p>Deletes user #1</p></div>
+            </section>
+            <section>
+                <h3>HTTP status codes</h3>
+                <ul>
+                    <li><strong>1xx:</strong> Request received, continuing process.</li>
+                    <li><strong>2xx:</strong> OK</li>
+                    <li><strong>3xx:</strong> GO there -></li>
+                    <li><strong>4xx:</strong> You f*cked up!</li>
+                    <li><strong>5xx:</strong> I screwed up</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Json encode</h3>
+              <pre><code class="hljs json" data-trim>
+{
+      "user_id":1,
+      "name":"Antonio Mallia",
+      "username":"antonio",
+      "email":"me@antoniomallia.it",
+      "last_active":1360031425,
+      "created":1315711352,
+      "is_deleted":0
+}
+             </code></pre>
+
+            </section>
+            <section>
+                <h3>Query parameters</h3>
+                    <pre style="width: 50%;float: left;"><code class="hljs text"
+                                                               data-trim>GET /users?deleted=1</code></pre>
+                <div style="width: 50%;float: left;"><p>Filter the deleted users</p></div>
+                    <pre style="width: 50%;float: left;"><code class="hljs text"
+                                                               data-trim>GET /users?sort=name+DESC</code></pre>
+                <div style="width: 50%;float: left;"><p>Sort by name descending</p></div>
+                    <pre style="width: 50%;float: left;"><code class="hljs text"
+                                                               data-trim>GET /users?q=antonio</code></pre>
+                <div style="width: 50%;float: left;"><p>Search word "antonio"</p></div>
+            </section>
+            <section>
+                <h3>Token based authentication</h3>
+                <p>A RESTful API should be stateless.</p>
+                <img src="img/no-cookies.jpeg">
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <!-- Framework choice-->
+                <h2>Framework</h2>
+            </section>
+            <section>
+                <h3>hard to choose</h3>
+                <img src="img/frameworks.png">
+            </section>
+            <section data-background="#FFFFFF">
+                <h3>Popular Java frameworks</h3>
+                <img src="img/spark.png" style=" border:none; box-shadow:none;">
+                <img src="img/ninja.png" style=" border:none; box-shadow:none;">
+                <img src="img/play.png" style=" border:none; box-shadow:none;">
+                <img src="img/dropwizard.png" style=" border:none; box-shadow:none;">
+                <img src="img/ratpack.png" style=" border:none; box-shadow:none;">
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Our choice</h2>
+                <img src="img/dropwizard-home.png">
+            </section>
+            <section>
+                <h2>Overview</h2>
+                <ul>
+                    <li>Embedded <strong>Jetty</strong>: HTTP server directly into your project</li>
+                    <li>REST with <strong>Jersey</strong>: JAX-RS reference implementation</li>
+                    <li><strong>Jackson</strong> for JSON: the king of JSON on the JVM</li>
+                    <li><strong>Logback</strong> and <strong>slf4j</strong>: performant and flexible logging</li>
+                    <li><strong>Hibernate Validator</strong> (JSR-349): for validating user input</li>
+                    <li><strong>Guava</strong>: speed up development in Java</li>
+                    <li><strong>Joda Time</strong>: library for dates and times</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Gradle compatible</h2>
+                <p>Add the dropwizard-core library as a dependency</p>
+					<pre><code class="hljs gradle" data-trim>
+dependencies {
+    compile ('com.yammer.dropwizard:dropwizard-core:'+dropwizardVersion)
+}
+                    </code></pre>
+            </section>
+            <section>
+                <h2>One-JAR</h2>
+                <p>One-JAR lets you package a Java application together with its dependency Jars into a single
+                    executable Jar file</p>
+                    <pre><code class="hljs gradle" data-trim>
+buildscript {
+    dependencies {
+        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
+    }
+}
+
+mainClassName = 'com.droidcon.it.backend.BackendApp'
+
+task oneJar(type: OneJar) {
+    mainClass = mainClassName
+}
+                    </code></pre>
+            </section>
+
+            <section>
+                <h2>Configuration file</h2>
+                <p>Just need to create a simple YAML file</p>
+                <pre><code class="hljs yaml" data-trim>
+server:
+  type: simple
+  connector:
+    type: https
+    port: 8080
+logging:
+  level: INFO
+                </code></pre>
+                <p>Can be extended with custom configuration</p>
+            </section>
+
+
+            <section>
+                <h2>The application class</h2>
+                <pre><code class="hljs Java" data-trim>
+public class BackendApp extends Application&lt;BackendConf&gt; {
+
+    @Override
+    public void run(BackendConf configuration, Environment environment) {
+        // nothing to do yet
+    }
+    
+    public static void main(String[] args) {
+        new BackendApp().run(args);
+    }
+}
+                </code></pre>
+            </section>
+            <section>
+                <h2>Hello world resource</h2>
+                <pre><code class="hljs Java" data-trim>
+@Path("/hello-world")
+public class HelloWorldResource {
+    
+    @GET
+    @Path("/")
+    public Response sayHello() {    
+        return Response.ok("Hello world!").build();
+    }
+
+    @GET
+    @Path("/{name}")
+    public Response sayHello(@PathParam("name") @NotNull String name) {    
+        return Response.ok(String.format("Hello %s!", name)).build();
+    }
+}
+                </code></pre>
+            </section>
+            <section>
+                <h2>Run it!</h2>
+                <pre><code class="hljs no-highlight" data-trim>
+java -jar target/backend-0.0.1.jar server backend-conf.yml
+                </code></pre>
+                <p>As simple as that!</p>
+            </section>
+        </section>
+
+
+        <section>
+
+            <section>
+                <h2>Database</h2>
+            </section>
+            <section>
+                <img src="img/mongodb.png" style="border:none; box-shadow:none;">
+                <ul>
+                    <li>JSON-like documents</li>
+                    <li>Uses dynamic schemas</li>
+                    <li>No ORM needed</li>
+                    <li>Designed with scalability in mind</li>
+                    <li>No DBA necessary</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Plug to Dropwizard</h2>
+                <p>Add the dependencies</p>
+                    <pre><code class="hljs gradle" data-trim>
+    compile 'com.meltmedia.dropwizard:dropwizard-mongo:0.2.0'    
+                    </code></pre>
+                <p>Extend configuration</p>
+                    <pre><code class="hljs java" data-trim>
+public class BackendConf extends Configuration{
+    @JsonProperty
+    private MongoConfiguration mongo;
+}
+                    </code></pre>
+            </section>
+            <section>
+                <h2>Plug to Dropwizard</h2>
+                <p>Initialize</p>
+                    <pre><code class="hljs java" data-trim>
+public class BackendApp extends Application&lt;BackendConf&gt; {
+    
+    MongoBundle&lt;BackendConf&gt; mongoBundle;
+    
+    @Override
+    public void initialize(Bootstrap&lt;BackendConf&gt; bootstrap) {
+      bootstrap.addBundle(mongoBundle = 
+        MongoBundle.&lt;BackendConf&gt;builder()
+        .withConfiguration(BackendConf::getMongo)
+        .build());
+    }
+    ...
+}
+            </code></pre>
+                <p>Get the default DB</p>
+            <pre><code class="hljs java" data-trim>
+DB db = mongoBundle.getDB();
+</code></pre>
+            </section>
+
+            <section>
+                <h2>MongoJack</h2>
+                <p>Since MongoDB uses BSON, a binary form of JSON, to store its documents, a JSON mapper is a perfect
+                    mechanism for mapping Java objects to MongoDB documents.</p>
+            </section>
+            <section>
+                <h2>Get user #1</h2>
+                <pre><code class="hljs text" data-trim>GET /users/1</code></pre>
+
+            <pre><code class="hljs java" data-trim>  
+
+@GET
+@Path("/{id}")
+public Response getUser(@PathParam("id") @NotNull String id) {    
+    DBCollection dbColl = db.getCollection("users");
+    JacksonDBCollection&lt;User, String&gt; coll = 
+        JacksonDBCollection.wrap(dbCollection, User.class, String.class);
+    User user = coll.findOneById(id);
+    return Response.ok(user).build();
+}
+            </code></pre>
+            </section>
+            <section>
+                <h2>Create new user</h2>
+                <pre><code class="hljs text" data-trim>POST /users</code></pre>
+
+            <pre><code class="hljs java" data-trim>  
+@Context
+UriInfo uri;
+
+@POST
+@Path("/")
+public Response createUser(@Valid User user) {    
+    DBCollection dbColl = db.getCollection("users");
+    JacksonDBCollection&lt;User, String&gt; coll = 
+        JacksonDBCollection.wrap(dbCollection, User.class, String.class);
+    WriteResult&lt;User, String&gt; result = coll.insert(user);
+    String id = result.getSavedId();
+    UriBuilder builder = uri.getAbsolutePathBuilder();
+    return Response.created(builder.path(id).build()).build();
+}
+            </code></pre>
+            </section>
+            <section>
+                <h2>Login</h2>
+                <pre><code class="hljs text" data-trim>POST /login</code></pre>
+
+            <pre><code class="hljs java" data-trim>  
+@POST
+@Path("/")
+public Response login(@Valid Credentials credentials) {    
+    DBCollection dbColl = db.getCollection("users");
+    JacksonDBCollection&lt;User, String&gt; coll = 
+        JacksonDBCollection.wrap(dbCollection, User.class, String.class);
+    User user = coll.findOneById(DBQuery.and(
+        DBQuery.is("username", credentials.getUsername()), 
+        DBQuery.is("password", credentials.getHashPassword())
+        ));
+    if(user != null){
+        // Generate token
+        return Response.ok(token).build();
+    }
+    return Response.status(Response.Status.NOT_FOUND).build();    
+}
+            </code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>JSON Web Token (JWT)</h2>
+
+                <blockquote class="smallquote colored">"JSON-based open standard (RFC 7519) for passing claims between
+                    parties in web application
+                    environment."
+                </blockquote>
+                <p>Used to send information that can be verified<br/>and trusted by means of a digital signature</p>
+            </section>
+            <section>
+                <h2>JWT Structure</h2>
+                <p>JWT consist of three parts separated by dots (.)</p>
+
+                <blockquote style="width: 100%;">
+                    <span style="color: red">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.<br/>
+                    <span style="color: DarkOrchid">eyJuYW1lIjoiRHJvaWRjb24iLCJhZG1pbiI6dHJ1ZX0</span>.<br/>
+                    <span style="color: OliveDrab">x6Uvbp2N8M64yK4tV4rj971Di8xErW-vMEFFL7IN084</span>
+                </blockquote>
+
+            </section>
+            <section>
+                <h2>JWT Header</h2>
+                <p>Consist of two parts:</p>
+                <ul>
+                    <li>Type of the token</li>
+                    <li>Hashing algorithm</li>
+                </ul>
+                <blockquote style="width: 100%;"><span style="color: red">{"alg": "HS256", "typ": "JWT"}</span>
+                </blockquote>
+                <p><strong>Base64</strong> encoded</p>
+            </section>
+            <section>
+                <h2>JWT Payload</h2>
+                <p>Contains the claims</p>
+                <ul>
+                    <li><strong>Reserved claims</strong>: iss (issuer), exp (expiration time), etc.</li>
+                    <li><strong>Public claims</strong>: IANA JSON Web Token Registry</li>
+                    <li><strong>Private claims</strong>: producer and consumer agreenment</li>
+                </ul>
+                <blockquote style="width: 100%;">
+                    <span style="color: DarkOrchid">{"name": "Droidcon", "admin": true}</span>
+                </blockquote>
+
+            </section>
+            <section>
+                <h2>JWT Signature</h2>
+                <p>Encoded header and payload with a <b>secret key</b></p>
+                <p>The signature is used to verify the sender of the JWT and to ensure that the message wasn't
+                    changed</p>
+                <blockquote style="width: 100%;"><span style="color: OliveDrab">HMACSHA256( base64UrlEncode(header) + "." <br/>+
+                    base64UrlEncode(payload), secret)</span></blockquote>
+            </section>
+            <section>
+                <h2>Plug to Dropwizard</h2>
+                <p>Add the dependencies</p>
+                    <pre><code class="hljs gradle" data-trim>
+dependencies {
+  compile (
+    'io.dropwizard:dropwizard-auth:'+dropwizardVersion, 
+    'com.github.toastshaman:dropwizard-auth-jwt:'+dropwizardVersion+'-0'
+  )
+}
+                    </code></pre>
+            </section>
+            <section>
+                <h2>Authenticator</h2>
+                <p>UserPrincipal is the one from java.security</p>
+                    <pre><code class="hljs java" data-trim>
+public class Auth implements Authenticator&lt;JsonWebToken, UserPrincipal&gt; 
+{
+    @Override
+    public Optional&lt;UserPrincipal&gt; authenticate(JsonWebToken token) {
+        final JsonWebTokenValidator expiryValidator = 
+            new ExpiryValidator();
+        expiryValidator.validate(token);
+
+        // Check on DB
+        if(token.claim()...){
+            return Optional.of(new UserPrincipal(...)); 
+        }
+
+        return Optional.absent();
+    }
+}
+                    </code></pre>
+            </section>
+            <section>
+                <h2>Use it in resource</h2>
+                <p> Add to the header:</p>
+                <blockquote class="smallquote colored">Authorization: Bearer &lt;token&gt;</blockquote>
+                    <pre><code class="hljs java" data-trim>
+@Path("/secret")
+public class SuperSecretResource {
+    @GET
+    @Path("/")
+    public Response secret(@Auth UserPrincipal user){
+        return Response.ok("Secret code").build();
+    }
+}
+                    </code></pre>
+            </section>
+            <section>
+                <h2>Generate a token</h2>
+
+                    <pre><code class="hljs java" data-trim>
+final JwtClaims claims = new JwtClaims();
+claims.setExpirationTimeMinutesInTheFuture(30);
+claims.setClaim("username","...");
+
+final JsonWebSignature jws = new JsonWebSignature();
+jws.setPayload(claims.toJson());
+jws.setAlgorithmHeaderValue(HMAC_SHA256);
+jws.setKey(new HmacKey(tokenSecret));
+                    </code></pre>
+            </section>
+        </section>
+        <!--
+            ********** END OF PART 1 **********
+        -->
+
+        <section>
+            <h3>Let's move to the client...</h3>
+        </section>
+
+        <section>
+            <h2>Android Vanilla</h2>
+            <section>
+                <blockquote class="smallquote fragment colored">
+                    <p>Prior to Froyo, HttpURLConnection had some frustrating bugs.
+                        In particular, calling close() on a readable InputStream could poison the connection pool...</p>
+                    <p class="fragment">...the large size of this API makes it difficult for us to improve it without
+                        breaking
+                        compatibility. The Android team is not actively working on Apache HTTP Client.</p>
+                    <p class="fragment quotefooter">From <a target="_blank"
+                                                            href="http://android-developers.blogspot.it/2011/09/androids-http-clients.html">Android's
+                        HTTP Clients - Android Developers Blog</a></p>
+                </blockquote>
+            </section>
+            <section>
+                <pre><code class="hljs java" contenteditable data-noescape>
+public static JSONObject requestRestResponse() {
+    HttpURLConnection urlConnection = null;
+    try {
+        // create connection
+        URL urlToRequest = new URL("http://mybackend.com/v1/req");
+        urlConnection = (HttpURLConnection)
+            urlToRequest.openConnection();
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(DATARETRIEVAL_TIMEOUT);
+                </code></pre>
+            </section>
+            <section><pre><code class="hljs java" contenteditable data-noescape>
+        // handle issues
+        int statusCode = urlConnection.getResponseCode();
+        if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            // handle unauthorized (if service requires user login)
+        } else if (statusCode != HttpURLConnection.HTTP_OK) {
+            // handle any other errors, like 404, 500,..
+        }
+
+        // create JSON object from content
+        InputStream in =
+            new BufferedInputStream(urlConnection.getInputStream());
+        return new JSONObject(getResponseText(in));
+                </code></pre>
+            </section>
+            <section><pre><code class="hljs java" contenteditable data-noescape>
+    } catch (MalformedURLException e) {
+        // URL is invalid
+    } catch (SocketTimeoutException e) {
+        // data retrieval or connection timed out
+    } catch (IOException e) {
+        // could not read response body
+    } catch (JSONException e) {
+        // response body is no valid JSON string
+    <span class="fragment current-visible">}
+    return null;
+}</span><span class="fragment current-visible">} finally {
+        if (urlConnection != null) {
+            // Don't forget to release resources
+            urlConnection.disconnect();
+        }
+    }
+    return null;
+}</span></code></pre>
+            </section>
+            <section>
+                <img src="img/wtf.jpg" style="alignment: center">
+            </section>
+            <section>
+                <br/>
+                <p class="fragment">Don't forget about <b>NetworkOnMainThreadException</b>. The most common
+                    solution for this kind of problems are <b>AsyncTasks</b>!</p>
+                <p class="fragment">Have you ever wrote?</p>
+            <pre class="fragment noshadow"><code class="hljs java" contenteditable data-noescape>
+@Override
+protected void onPostExecute(String result) {
+  <span class="fragment">if (getActivity() == null){
+    return; <span class="fragment">// Here Activity is gone...</span>
+  }
+  ...</span>
+}
+            </code>
+            </pre>
+            </section>
+            <section>
+                What about...?<br/>
+                <ul>
+                    <li class="fragment">Request cancellation</li>
+                    <li class="fragment">Parallel request</li>
+                    <li class="fragment">Scheduling</li>
+                    <li class="fragment">Caching</li>
+                    <li class="fragment myred">...and <b>boilerplate?</b></li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>HTTP Client libraries</h2>
+            <section>
+                <img src="img/donotreinvent.jpg" style="alignment: center"/>
+            </section>
+            <section>
+                <br/>
+                <p>If you have more than</p>
+                <p class="fragment grow">1K lines</p>
+                <p>of code for creating and handling your HTTP requests...</p>
+                <br/>
+                <p class="fragment grow highlight-red"><b>Ask yourself if you're doing it right!</b></p>
+            </section>
+            <section>
+                There a bunch of good HTTP clients for Android!<br/>
+                <ul>
+                    <li class="fragment">Retrofit</li>
+                    <li class="fragment">Volley</li>
+                    <li class="fragment">OkHTTP</li>
+                    <li class="fragment">Picasso</li>
+                    <li class="fragment">...and more</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>Retrofit 2.0</h2>
+            <section>
+                <ul>
+                    <li class="fragment">From <a target="_blank" href="http://square.github.io/">square.github.io</a>
+                    </li>
+                    <li class="fragment">Works with <b>Java Annotations</b></li>
+                    <li class="fragment">Support both <b>Sync/Async</b> execution</li>
+                    <li class="fragment"><b>Apache 2 Licensed</b></li>
+                    <li class="fragment">Recently released (<b>2016-03-11 v2.0.0</b>)</li>
+                </ul>
+                <pre class="fragment"><code class="hljs groovy" contenteditable data-noescape>
+compile 'com.squareup.retrofit2:retrofit:2.0.0'
+                </code></pre>
+                <aside class="notes">
+                    Anche detta 'Interface Service Declaration'.
+                    Far notare che la libreria è stata parecchio strippata rispetto alla versione 1.0 (120k - 50k).
+                    Prima gli HTTP Client erano pluggable, adesso sono OkHTTP (+ OkIo)
+                    Cache su Retrofit? Con un Interceptor di OkHTTP.
+                    Java 7 + Android 2.3 (api 10). Versione 2.0.1 rilasciata mercoledì 30 marzo
+                </aside>
+            </section>
+        </section>
+
+        <section>
+            <h2>Usage</h2>
+            <section>
+                Just use @<i>&lt;VERB&gt;</i> annotations.
+                <pre><code class="hljs java markable" data-trim contenteditable data-noescape>
+public interface GitHubService {
+  <span class="fragment">@GET("users/{user}/repos")</span>
+  <span class="fragment">Call&lt;List&lt;Repo&gt;&gt; listRepos(@Path(&quot;user&quot;) String user);</span>
+}
+            </code></pre>
+                <pre class="fragment"><code class="hljs java" data-trim contenteditable data-noescape>
+Retrofit retrofit = new Retrofit.Builder()
+    <span class="fragment">.baseUrl("https://api.github.com/")</span>
+    <span class="fragment">.build();</span>
+
+<span class="fragment">GitHubService service</span><span
+        class="fragment"> = retrofit.create(GitHubService.class);</span>
+                </code></pre>
+                <aside class="notes">
+                    Dire che in 1.0 non era disponibile l'accesso alla Response, adesso so possono
+                    pescare valori dagli header, etc...
+
+                    Supporto a FIXED + Dynamic
+                    @Url da Retrofit 2.0
+                    @Multipart
+                </aside>
+            </section>
+
+            <section>
+                Paths and Queries
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+public interface GitHubService {
+  <span class="fragment">@GET("users/{user}/repos")
+  Call&lt;List&lt;Repo&gt;&gt; listRepos(
+            @Path("user") String user);</span>
+
+  <span class="fragment">@GET("users/{user}/repos")
+  Call&lt;List&lt;Repo&gt;&gt; listRepos(
+            @Path("user") String user,
+            @Query("type") String type);</span>
+
+  <span class="fragment">@GET("users/{user}/repos")
+  Call&lt;List&lt;Repo&gt;&gt; listRepos(
+            @Path("user") String user,
+            @QueryMap Map&lt;String, String&gt; options);</span>
+}
+                </code></pre>
+                <aside class="notes">
+                    Dire che in 1.0 non era disponibile l'accesso alla Response, adesso so possono
+                    pescare valori dagli header, etc...
+
+                    Supporto a FIXED + Dynamic
+                    @Url da Retrofit 2.0
+                    @Multipart
+                </aside>
+            </section>
+
+            <section>
+                Headers
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+public interface GitHubService {
+    <span class="fragment">@Headers("User-Agent: my-Awesome-Retrofit-powered-app")
+    @GET("users/{user}/repos")
+    Call&lt;List&lt;Repo&gt;&gt; listRepos(@Path("user") String user);</span>
+
+    <span class="fragment">@GET("gists/public")
+    Call&lt;List&lt;Gist&gt;&gt; listGists(@Header("User-Agent") String uAgent)</span>
+}
+                </code></pre>
+                <aside class="notes">
+                    Dire che in 1.0 non era disponibile l'accesso alla Response, adesso so possono
+                    pescare valori dagli header, etc...
+
+                    Supporto a FIXED + Dynamic
+                    @Url da Retrofit 2.0
+                    @Multipart
+                </aside>
+            </section>
+
+            <section>
+                Custom URLs and Body
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+public interface GitHubService {
+    <span class="fragment">@GET
+    Call&lt;List&lt;User&gt;&gt; getCustomUsers(@Url String reqUrl);</span>
+
+    <span class="fragment">@POST("gists")
+    Call&lt;Gist&gt; createGist(@Body GistRequest grequest);</span>
+}
+                </code></pre>
+                <aside class="notes">
+                    Dire che in 1.0 non era disponibile l'accesso alla Response, adesso so possono
+                    pescare valori dagli header, etc...
+
+                    Supporto a FIXED + Dynamic
+                    @Url da Retrofit 2.0
+                    @Multipart
+                </aside>
+            </section>
+            <section>
+                <br/><img src="img/nice.png">
+            </section>
+        </section>
+
+        <section>
+            <h2>Converters</h2>
+            <section>
+                Retrofit 2 can be extended with <b>custom converters</b><br/>
+                <ul class="fragment" style="font-size: 70%">
+                    <li><b>Gson</b><code> com.squareup.retrofit:converter-gson</code></li>
+                    <li><b>Jackson</b><code> com.squareup.retrofit:converter-jackson</code></li>
+                    <li><b>Moshi</b><code> com.squareup.retrofit:converter-moshi</code></li>
+                    <li><b>Protobuf</b><code> com.squareup.retrofit:converter-protobuf</code></li>
+                    <li><b>Wire</b><code> com.squareup.retrofit:converter-wire</code></li>
+                    <li><b>Simple XML</b><code> com.squareup.retrofit:converter-simplexml</code></li>
+                </ul>
+                <p class="fragment">You can also implement yours with <b>Converter.Factory</b></p>
+                <aside class="notes">
+                    L'ordine è fondamentale. Vengono testati uno ad uno.
+                    Gson/Moshi/Jackson tornano sempre true, però tipo protobuf no...
+                    Nessuno è incluso di default, vanno pluggati
+                </aside>
+            </section>
+            <section>
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment semi-fade-out" data-fragment-index="1">Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl("https://api.github.com/")</span>
+        .addConverterFactory(JacksonConverterFactory.create())
+<span class="fragment semi-fade-out" data-fragment-index="1">        .build();
+
+service = retrofit.create(GitHubService.class);</span>
+                </code></pre>
+                <aside class="notes">
+                    L'ordine è fondamentale. Vengono testati uno ad uno.
+                    Gson/Moshi/Jackson tornano sempre true, però tipo protobuf no...
+                    Nessuno è incluso di default, vanno pluggati
+                </aside>
+            </section>
+            <section>
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+Gson gson = new GsonBuilder()
+        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        .create();
+
+<span class="fragment semi-fade-out" data-fragment-index="1">Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl("https://api.github.com/")
+        .addConverterFactory(</span>GsonConverterFactory.create(gson)<span class="fragment semi-fade-out"
+                                                                           data-fragment-index="1">)
+        .build();
+
+service = retrofit.create(GitHubService.class);</span>
+                </code></pre>
+                <aside class="notes">
+                    Gson/Moshi/Jackson tornano sempre true, però tipo protobuf no...
+                    È possibile utilizzare il gson custom per settare date, pretty print, versioning, o Serializer
+                    custom.
+                </aside>
+            </section>
+        </section>
+
+        <section>
+            <h2>Call Adapters</h2>
+            <section>
+                By default interface exposes methods returning a <b>Call</b><br/>
+                <p class="fragment">You can plug a <b>Call Adapter</b> to work with:</p>
+                <ul class="fragment">
+                    <li>Observables (RxJava)</li>
+                    <li>ListeanableFuture (Guava)</li>
+                    <li>CompletableFuture (Java8)</li>
+                </ul>
+                <aside class="notes">
+                    L'ordine è fondamentale. Vengono testati uno ad uno.
+                    Nessuno è incluso di default, vanno pluggati
+                    Calls are oneshot but you can clone.
+                    Cancelli con call.cancel()
+                </aside>
+            </section>
+            <section>
+                Without Call Adapter - Sync
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+// Sync call
+
+Call&lt;Repo&gt; call = service.loadRepo();
+<span class="fragment" data-fragment-index="2">Response&lt;Repo&gt; response = </span><span class="fragment"
+                                                                                            data-fragment-index="1">call.execute();</span>
+                </code></pre>
+            </section>
+            <section>
+                Without Call Adapter - Async
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+// Async call
+
+Call&lt;Repo&gt; call = service.loadRepo();
+<span class="fragment" data-fragment-index="1">call.enqueue</span><span class="fragment" data-fragment-index="2">(new Callback&lt;Repo&gt;() {</span>
+    <span class="fragment" data-fragment-index="3">@Override
+    public void onResponse(Response&lt;Repo&gt; response) {
+        // Get result Repo from response.body()
+    }</span>
+    <span class="fragment" data-fragment-index="4">
+    @Override
+    public void onFailure(Throwable t) {
+        // Handle failure
+    }</span>
+<span class="fragment" data-fragment-index="2">});</span>
+                </code></pre>
+            </section>
+            <section>
+                With RxJava you can simply rewrite as:
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment semi-fade-out" data-fragment-index="1">Retrofit retrofit = new Retrofit.Builder()
+    .baseUrl("https://api.github.com/")</span>
+    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+<span class="fragment semi-fade-out" data-fragment-index="1">    .build();</span>
+                </code></pre>
+            </section>
+            <section>
+                With RxJava you can simply rewrite as:
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment semi-fade-out" data-fragment-index="1">public interface APIService {
+    
+    @GET("gists/public")
+    Call&lt;Gist&gt; getGists();
+
+    @GET("gists/public")</span>
+    Observable&lt;Gist&gt; getGistsRx();
+<span class="fragment semi-fade-out" data-fragment-index="1">}</span>
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>Volley</h2>
+            <section>
+                <ul>
+                    <li class="fragment">From <a target="_blank"
+                                                 href="http://developer.android.com/training/volley/index.html">Google</a>
+                    </li>
+                    <li class="fragment">Available from the <b>AOSP</b> repo</li>
+                    <li class="fragment">Excellent for <b>populating the UI</b> with text and images</li>
+                    <li class="fragment">Excellent for <b>caching</b></li>
+                    <li class="fragment"><b>Apache 2</b> licensed</li>
+                    <li class="fragment myred"><b>Not well documented :(</b></li>
+                </ul>
+            <pre class="fragment"><code class="hljs groovy" contenteditable data-noescape>
+compile 'com.android.volley:volley:1.0.0'
+                </code></pre>
+                <aside class="notes">
+                    Ricordare che si possono schedulare in PARALLELO!!!
+                    Pool size dim 4 (default, ma settabile)
+                    Supporta da API4 in poi!!!
+                </aside>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Thread model</h2>
+                <img src="img/volley-cache.png" style="alignment: center" width="600px">
+            </section>
+            <aside class="notes">
+                Cache is transparent, superfast network response.
+            </aside>
+        </section>
+        <section>
+            <h2>Usage</h2>
+            <section>
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment">RequestQueue queue =
+    Volley.newRequestQueue(getApplicationContext());</span>
+
+<span class="fragment">StringRequest request = new StringRequest(
+    Request.Method.GET,
+    "https://api.github.com/gists/public",
+    this::handleResponse,
+    this::handleError);</span>
+
+<span class="fragment">request.setShouldCache(true);</span>
+<span class="fragment">request.setTag(requestTag); // A class member 'requestTag'</span>
+
+<span class="fragment">queue.add(request);</span>
+                </code></pre>
+            </section>
+            <section>
+                Request cancellation
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment" data-fragment-index="1">@Override
+protected void onStop() {</span>
+    <span class="fragment" data-fragment-index="2">queue.cancelAll(requestTag);</span>
+    <span class="fragment" data-fragment-index="1">super.onStop();
+}</span>
+                </code></pre>
+                <p class="fragment grow">Don't forget to do it!</p>
+            </section>
+            <section>
+                Image management
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment">ImageLoader mImageLoader;
+NetworkImageView mNetworkImageView;</span>
+
+<span class="fragment">private static final String IMAGE_URL =
+    "http://i.imgur.com/RLKixQW.png";</span>
+
+<span class="fragment">// Retrieve the ImageLoader (singleton/application/...)
+// Retrieve the NetworkImageView (findViewById)</span>
+
+<span class="fragment">mNetworkImageView.setImageUrl(IMAGE_URL, mImageLoader);</span>
+                </code></pre>
+                <aside class="notes">
+                    Autocanceled appena escono dalla gerarchia
+                </aside>
+            </section>
+            <section>
+                The NetworkImageView
+                <pre><code class="hljs xml" data-trim contenteditable data-noescape>
+&lt;com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/networkImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true" /&gt;
+                </code></pre>
+            </section>
+            <section>
+                The ImageLoader
+                <pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment" data-fragment-index="1">mImageLoader = new ImageLoader(</span><span class="fragment"
+                                                                                           data-fragment-index="2">mRequestQueue,
+        new ImageLoader.ImageCache() {</span>
+
+    <span class="fragment" data-fragment-index="3">private final LruCache&lt;String, Bitmap&gt; cache = new LruCache&lt;&gt;(20);</span>
+
+    <span class="fragment" data-fragment-index="4">@Override
+    public Bitmap getBitmap(String url) {
+        return cache.get(url);
+    }</span>
+
+    <span class="fragment" data-fragment-index="5">@Override
+    public void putBitmap(String url, Bitmap bitmap) {
+        cache.put(url, bitmap);
+    }</span>
+<span class="fragment" data-fragment-index="2">}</span><span class="fragment" data-fragment-index="1">);</span>
+                </code></pre>
+            </section>
+            <section>
+                <pre><code class="hljs bash" data-trim contenteditable data-noescape>
+~$ adb shell setprop log.tag.Volley VERBOSE
+                </code></pre>
+
+                <pre class="fragment"><code class="hljs bash" data-trim contenteditable data-noescape>
+D/Volley (670  ms) [ ] https://api.github.com/users/cortinico
+D/Volley (+0   ) [ 1] add-to-queue
+D/Volley (+0   ) [238] cache-queue-take
+D/Volley (+0   ) [238] cache-miss
+D/Volley (+10  ) [242] network-queue-take
+D/Volley (+630 ) [242] network-http-complete
+D/Volley (+0   ) [242] network-parse-complete
+D/Volley (+0   ) [242] network-cache-written
+D/Volley (+0   ) [242] post-response
+D/Volley (+30  ) [ 1] done
+D/Volley (10   ms) [ ] https://api.github.com/users/cortinico
+D/Volley (+0   ) [ 1] add-to-queue
+D/Volley (+0   ) [238] cache-queue-take
+D/Volley (+0   ) [238] cache-hit
+D/Volley (+0   ) [238] cache-hit-parsed
+D/Volley (+0   ) [238] post-response
+D/Volley (+10  ) [ 1] done
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>Let's try Retrofit on our User Manager...</h2>
+        </section>
+
+        <section>
+            <h2>Our Backend API</h2>
+            <section>
+<pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment" data-fragment-index="1">public interface UserInterface {</span>
+
+    <span class="fragment" data-fragment-index="2">@GET("users")
+    Call&lt;List&lt;User&gt;&gt; getUsers();</span>
+
+    <span class="fragment" data-fragment-index="3">@GET("users")
+    Call&lt;List&lt;User&gt;&gt; getUsers(@Query("deleted") int isDeleted);</span>
+
+    <span class="fragment" data-fragment-index="3">@GET("users")
+    Call&lt;List&lt;User&gt;&gt; getUsers(@Query("sort") String sort);</span>
+
+    <span class="fragment" data-fragment-index="3">@GET("users")
+    Call&lt;List&lt;User&gt;&gt; getUsers(@QueryMap Map&lt;String, String&gt; params);</span>
+
+    <span class="fragment" data-fragment-index="3">@GET("users")
+    Call&lt;List&lt;User&gt;&gt; searchUsers(@Query("q") String query);</span>
+<span class="fragment" data-fragment-index="1">}</span>
+</code></pre>
+            </section>
+            <section>
+<pre><code class="hljs java" data-trim contenteditable data-noescape>
+<span class="fragment" data-fragment-index="1">public interface UserInterface {</span>
+
+    <span class="fragment" data-fragment-index="2">@GET("users/{id}")
+    Call&lt;User&gt; getUser(@Path("id") int userid);
+
+    @POST("users")
+    Call&lt;User&gt; createUser(@Body User u);
+
+    @PUT("users/{id}")
+    Call&lt;User&gt; updateUser(@Path("id") int userid, @Body User user);
+
+    @DELETE("users/{id}")
+    Call&lt;User&gt; deleteUser(@Path("id") int userid);</span>
+
+    <span class="fragment" data-fragment-index="3">@GET("secret")
+    Call&lt;Secret&gt; getSecret(@Header("Authorization") String secret);</span>
+<span class="fragment" data-fragment-index="1">}</span>
+</code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>Which client?</h2>
+            <section>
+                <ul class="fragment" data-fragment-index="1">
+                    <li class="fragment" data-fragment-index="1"><span class="fragment" data-fragment-index="1">Want less and elegant code?</span><b
+                            class="fragment" data-fragment-index="2"> ...Retrofit!</b></li>
+                    <li class="fragment" data-fragment-index="3"><span class="fragment" data-fragment-index="3">Want control over scheduling/caching?</span><b
+                            class="fragment" data-fragment-index="4"> ...Volley!</b></li>
+                    <li class="fragment" data-fragment-index="5"><span class="fragment" data-fragment-index="5">Want image management?</span><b
+                            class="fragment" data-fragment-index="6"> Volley!</b> <b class="fragment"
+                                                                                     data-fragment-index="7">...or
+                        Retrofit + Picasso</b></li>
+                    <li class="fragment" data-fragment-index="8"><span class="fragment" data-fragment-index="8">Default choose?</span><b
+                            class="fragment" data-fragment-index="8"> ...Retrofit!</b></li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>Recap</h2>
+            <section>
+                <ul>
+                    <li class="fragment">You can simply write your backend with <b>Java!</b></li>
+                    <li class="fragment">Development can be integrated inside <b>Android Studio</b>.</li>
+                    <li class="fragment">Get rid of <b>boilerplate HTTP code</b>.</li>
+                    <li class="fragment">...and unleash the power of <b>Caching</b>.</li>
+                </ul>
+            </section>
+        </section>
+
+        <section class="questions">
+            <h1>Questions?</h1>
+            <section>
+                <br/><br/><br/>
+                <p><strong><i class="fa fa-github"></i> <a href="https://github.com/backend4android/slides">github.com/backend4android/slides</a></strong>
+                </p>
+                <br/>
+                <div class="author anto">
+                    <h3><strong>Antonio</strong><br/>Mallia</h3>
+                    <p class="contacts">
+                        <i class="fa fa-paper-plane"></i> <a
+                            href="mailto:me@antoniomallia.it">me@antoniomallia.it</a><br/>
+                        <i class="fa fa-twitter"></i> <a
+                            href="https://twitter.com/antonio_mallia">@antonio_mallia</a><br/>
+                        <i class="fa fa-github"></i> <a href="https://github.com/amallia">github.com/amallia</a>
+                    </p>
+                </div>
+                <div class="author nico">
+                    <h3><strong>Nicola</strong><br/>Corti</h3>
+                    <p class="contacts">
+                        <a href="mailto:corti.nico@gmail.com">corti.nico@gmail.com</a> <i class="fa fa-paper-plane"></i><br/>
+                        <a href="https://twitter.com/cortinico">@cortinico</a> <i class="fa fa-twitter"></i><br/>
+                        <a href="https://github.com/cortinico">github.com/cortinico</a> <i class="fa fa-github"></i>
+                    </p>
+                </div>
+                <p>
+                    <small><strong>
+                        <a href="https://creativecommons.org/licenses/by/4.0/"><i
+                                class="fa fa-creative-commons"></i> By 4.0</a>
+                    </strong></small>
+                </p>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'slide',
+
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+</script>
+</body>
+</html>
